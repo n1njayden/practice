@@ -17,9 +17,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('posts', [
+        $posts = Post::latest();
+
+        if(request('search')){
+            $posts->where('title', 'like', '%' . request('search') . '%');
+        }
+
+        return view('posts', [
         'posts' => Post::latest()->get(),
         'categories' => Category::all()
+
+
     ]);
 })->name('home');
 
