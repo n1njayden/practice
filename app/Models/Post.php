@@ -12,6 +12,22 @@ class Post extends Model
 
     protected $guarded = [];
 
+    public function scope($query, array $filters){
+        $query->when($filters['search'] ?? false, fn ($query, $search)=>
+            $query
+                ->where('title', 'like', '%' . request('search') . '%')
+                ->orWhere('title', 'like', '%' . request('search') . '%'));
+
+
+
+        // $query->when($filters['search'] ?? false, fn ($query, $search)=>
+        //     $query
+        //         ->whereHas('category', fn($query)=>
+        //              $query->where('slug' $category)
+        //         )
+        //     );
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';
